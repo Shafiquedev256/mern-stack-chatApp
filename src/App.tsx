@@ -1,13 +1,14 @@
 import HomePage from "./pages/home"
-
+import ChatRoom from "./pages/chartroom"
 function App() {
 
 
   return (
     <> 
-    <div className="">
+    <div className="hidden">
 <HomePage/>
-</div>
+</div> 
+     <ChatRoom/>
     </>
   )
 }

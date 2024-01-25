@@ -1,19 +1,45 @@
-import { useState } from 'react';
-import SendIcone from "../assets/send-svgrepo-com.svg"
+import { useState,useEffect } from 'react'; 
+import SendIcone from "../assets/send-svgrepo-com.svg" 
+
+
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:4000',{
+    transports: ['websocket'], // Required when using Vite      
+}); 
+
 const ChatRoom = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(''); 
+const [messages, setMessages] = useState<any>([])
   
-  const handleInputChange = (e:any) => {
+  useEffect(()=>{
+
+socket.on("message",(msg)=>{
+setMessages((prev:any)=>[...prev,msg])
+})
+
+  },[])
+  
+  const handleInputChange = (e:any) => { 
+    
     setMessage(e.target.value);
   };
 
-  const handleSendMessage = () => {
-
+  const handleSendMessage = (e:any) => { 
+    e.preventDefault()
+ if(message){
+   socket.emit("sendMessage",{message}) 
+   setMessage("")
+ }
   };
 
   return (
-    <div className="flex flex-col h-screen bg-blue-100 bg-opacity-25 relative">
-
+    <div className="flex flex-col h-screen bg-blue-100 bg-opacity-25 relative"> 
+{
+messages.length>0&&messages.map(item=>{
+  return(<div>{item.message}</div>)
+})
+}
       <div className="flex items-center justify-center fixed bottom-0 bg-white w-screen left-0">
         <input
           type="text"

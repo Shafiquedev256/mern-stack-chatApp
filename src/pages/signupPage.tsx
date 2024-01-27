@@ -1,5 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-
+import {useNavigate} from "react-router-dom" 
+import  {UseAuth} from "../authentications/auth"
 type Initial = {
   email: string;
   password: string;
@@ -8,7 +9,10 @@ type Initial = {
 
 const initial: Initial = { email: '', password: '', name: '' };
 
-const SignupPage = () => (
+const SignupPage = ({socket}:any) =>{ 
+  const login = UseAuth().logIn()
+  const navigate = useNavigate()
+ return (
   <div className="max-w-lg mx-auto mt-8 p-8 bg-white shadow-md rounded-md">
     <h1 className="text-3xl text-gray-800 mb-6 font-semibold">Sign up</h1>
     <Formik
@@ -28,10 +32,15 @@ const SignupPage = () => (
         }
         return errors;
       }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
+      onSubmit={(values, { setSubmitting }) => {  
+      const details = JSON.stringify(values, null, 2)
+     socket.connect() ; 
+     login
+        setTimeout(() => {  
+localStorage.setItem("_youInfo",details)
+      socket.emit("userDetails",details);
+          setSubmitting(false); 
+          navigate("/",{replace:true})
         }, 400);
       }}
     >
@@ -61,7 +70,7 @@ const SignupPage = () => (
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-800 transition duration-300 border-0 font-bold"
+            className="w-full bg-blue-600 text-white p-4 rounded-md cursor-pointer hover:bg-blue-800 transition duration-300 border-0 font-bold"
           >
             Submit
           </button>
@@ -69,6 +78,7 @@ const SignupPage = () => (
       )}
     </Formik>
   </div>
-);
+)
+};
 
 export default SignupPage;

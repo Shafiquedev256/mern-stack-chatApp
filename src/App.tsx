@@ -16,7 +16,9 @@ function App() {
 localStorage.clear()
   return (
     <>   
-    <AuthProvider>
+   
+    <AuthProvider> 
+ <div className="font-sans">
     <BrowserRouter>
     <Routes> 
     <Route path="/" element={<Protected><HomePage /></Protected> }/> 
@@ -24,7 +26,8 @@ localStorage.clear()
     <Route path="/chatroom" element={<Protected><ChatRoom socket={socket}/></Protected> }/> 
     </Routes>
     </BrowserRouter> 
-    </AuthProvider>
+    </div>
+    </AuthProvider> 
     </>
   )
 }

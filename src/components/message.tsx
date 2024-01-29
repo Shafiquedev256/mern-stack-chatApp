@@ -7,13 +7,14 @@ type Props ={
 export const SentMessage = ({ message,time}:Props) => {
   return ( 
     <>
-    <div className="w-[75%] my-3">
-      <div className="ml-3 bg-blue-500 text-white p-1 rounded-tl-2xl rounded-br-2xl">
-        <p className="text-sm">{message}</p>
-        <div className="text-xs text-gray-300 mt-2">{time}</div>
+    <div className="hidden">{time}</div>
+    <div className="">
+<div className=" mb-2 w-[90%] mx-2">
+      <div className="bg-green-500 text-white py-2 px-4 mt-1 rounded-lg w-fit">
+        {message}
       </div>
-    </div>  
-    
+    </div>
+    </div>
     </>
   );
 };

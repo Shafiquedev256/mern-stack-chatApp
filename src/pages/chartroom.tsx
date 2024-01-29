@@ -1,6 +1,9 @@
-import { useState,useEffect } from 'react'; 
+import { useState,useEffect } from 'react';  
+import  {UseAuth} from "../authentications/auth" 
 import SendIcone from "../assets/send-svgrepo-com.svg" 
 import {SentMessage} from "../components/message"
+import {ChatroomHeader} from "../components/header"
+
 
 type MESSAGE = {
   message:string,
@@ -12,6 +15,7 @@ type MESSAGE = {
 const ChatRoom = ({socket}:any) => {
   const [message, setMessage] = useState(''); 
 const [messages, setMessages] = useState<MESSAGE[]>([])
+  const user = UseAuth().userEl
   
   useEffect(()=>{
 socket.on("message",(msg:MESSAGE)=>{
@@ -27,13 +31,16 @@ return ()=>{socket.off("message")};
 
   const handleSendMessage = () => { 
  if(message){
-   socket.emit("sendMessage",{message}) 
+   socket.emit("sendMessage",{message,user}) 
  } 
 setMessage("")
   };
 
-  return (
+  return ( 
+    <>
+    <ChatroomHeader/>
     <div className="flex flex-col h-screen bg-blue-100 bg-opacity-25 relative overflow-scroll"> 
+    
 {
 messages&&messages.map(item=>{
   return(<SentMessage message={item.message} time={item.time}/>)
@@ -59,7 +66,8 @@ messages&&messages.map(item=>{
       /> 
         </button>
       </div>
-    </div>
+    </div> 
+    </>
   );
 };
 

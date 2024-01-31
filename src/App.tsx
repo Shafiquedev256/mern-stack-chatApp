@@ -6,14 +6,13 @@ import SignupPage from "./pages/signupPage"
 import  {AuthProvider} from "./authentications/auth"
 import  {Protected} from "./authentications/protected"
 
-const socket = io('http://localhost:4000',{
+export const socket = io('http://localhost:4000',{
     transports: ['websocket'], 
     autoConnect:false,
 }); 
 
 function App() {
 
-localStorage.clear()
   return (
     <>   
    

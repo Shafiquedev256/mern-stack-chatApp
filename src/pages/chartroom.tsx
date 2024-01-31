@@ -7,7 +7,9 @@ import {ChatroomHeader} from "../components/header"
 
 type MESSAGE = {
   message:string,
-  time:string
+  room:string,
+  userName:string,
+  userEmail:string
 }
 
 
@@ -15,14 +17,26 @@ type MESSAGE = {
 const ChatRoom = ({socket}:any) => {
   const [message, setMessage] = useState(''); 
 const [messages, setMessages] = useState<MESSAGE[]>([])
+
   const user = UseAuth().userEl
+  const room = UseAuth().inChartRoom().name 
+  
   
   useEffect(()=>{
 socket.on("message",(msg:MESSAGE)=>{
 setMessages((state)=>[...state,msg])
-}) 
+})   
 return ()=>{socket.off("message")}; 
   }, []);
+
+useEffect(()=>{ 
+  socket.emit("getOldmessages",{old:true})
+  socket.on("oldmessages",(msg:any)=>{
+    const old = msg.old 
+    setMessages((state)=>[...old,...state])
+  })
+
+  }, [socket]);
   
   const handleInputChange = (e:any) => { 
     
@@ -31,7 +45,7 @@ return ()=>{socket.off("message")};
 
   const handleSendMessage = () => { 
  if(message){
-   socket.emit("sendMessage",{message,user}) 
+   socket.emit("sendMessage",{message,...user,room}) 
  } 
 setMessage("")
   };
@@ -42,8 +56,10 @@ setMessage("")
     <div className="flex flex-col h-screen bg-blue-100 bg-opacity-25 relative overflow-scroll"> 
     
 {
-messages&&messages.map(item=>{
-  return(<SentMessage message={item.message} time={item.time}/>)
+messages&&messages.map(item=>{ 
+if(item.userName===user.name){
+return(<div className="flex justify-end"><SentMessage message={item.message} color="bg-green-500" userName="You"/></div>)}
+return(<SentMessage message={item.message} color="bg-purple-500" userName={item.userName}/>)
 })
 }
 <div className="p-1 bg-none w-screen h-[150px] my-16"></div>

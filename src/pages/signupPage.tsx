@@ -13,6 +13,8 @@ const SignupPage = ({socket}:any) =>{
   const login = UseAuth().logIn() 
   const user = UseAuth()
   const navigate = useNavigate()
+  const chartRoom:string = UseAuth().inChartRoom().name
+  
  return (
   <div className="max-w-lg mx-auto mt-8 p-8 bg-white shadow-md rounded-md">
     <h1 className="text-3xl text-gray-800 mb-6 font-semibold">Sign up</h1>
@@ -39,7 +41,7 @@ const SignupPage = ({socket}:any) =>{
      user.changeUser(values)
         setTimeout(() => {  
         localStorage.setItem("user",JSON.stringify(values))
-      socket.emit("userDetails",values);
+      socket.emit("userDetails",{...values,room:chartRoom});
           setSubmitting(false); 
           navigate("/",{replace:true})
         }, 400);

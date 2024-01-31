@@ -32,7 +32,7 @@ const Auth = createContext<Context>({}as Context)
 export const AuthProvider = ({children}:Children)=>{ 
   const [userEl,setUserEl]=useState<User>({}as User)
 const [isLogedin,setIslogedin]= useState(false) 
-const [chartRoom,setChartRoom]=useState<ChartRoom>({img:imgEl,name:"Developer"}) 
+const [room,setRoom]=useState<ChartRoom>({img:imgEl,name:"Developer"}) 
 
 useEffect(()=>{ 
 const storedUser = localStorage.getItem("user") 
@@ -57,10 +57,10 @@ setUserEl(user)
   } 
   
   const newChartRoom = (e:ChartRoom)=>{
-    setChartRoom(e)
+    setRoom(e)
   }
   
-  const inChartRoom = ()=>chartRoom
+  const inChartRoom = ()=>room
   
 
   return (

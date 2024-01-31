@@ -1,4 +1,5 @@
-import {useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom" 
+import {socket} from "../App"
 import imgEl from "../assets/149778835.png"
 import reactLogo from "../assets/React-icon.svg.png"
 import NodeLogo from "../assets/2560px-Node.js_logo.svg.png" 
@@ -15,9 +16,14 @@ export const FriendsCard = ()=>{
   const navigate = useNavigate()
   const setRoom = UseAuth()
   
-  const handleClick = (room:ChartRoom)=>{
-    setRoom.newChartRoom(room) 
-    navigate("/chatroom")
+  const {name,email,password}=UseAuth().userEl
+  
+  
+  const handleClick = (roomEl:ChartRoom)=>{
+    setRoom.newChartRoom(roomEl)  
+    socket.emit("joinroom",{room:roomEl.name})
+   socket.emit("userDetails",{name,email,password,room:roomEl}); 
+    navigate("/chatroom") 
   }
   
   return(

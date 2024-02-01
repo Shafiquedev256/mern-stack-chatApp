@@ -6,7 +6,7 @@ import SignupPage from "./pages/signupPage"
 import  {AuthProvider} from "./authentications/auth"
 import  {Protected} from "./authentications/protected"
 
-export const socket = io('http://localhost:4000',{
+export const socket = io('https://chartserver-2asn.onrender.com/',{
     transports: ['websocket'], 
     autoConnect:false,
 }); 

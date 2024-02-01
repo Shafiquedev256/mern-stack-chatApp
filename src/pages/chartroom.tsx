@@ -35,7 +35,7 @@ useEffect(()=>{
     const old = msg.old 
     setMessages((state)=>[...old,...state])
   })
-
+return ()=>{socket.off("oldmessages")}; 
   }, [socket]);
   
   const handleInputChange = (e:any) => { 
